@@ -3,6 +3,8 @@ package com.springboot.backend.jorge.usersapp.users_backend.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,15 +15,21 @@ import com.springboot.backend.jorge.usersapp.users_backend.repositories.UserRepo
 public class UserServiceImpl implements UserService {
 
     private UserRepository repository;
-
+    
     public UserServiceImpl(UserRepository repository) {
         this.repository = repository;
     }
-
+    
     @Override
     @Transactional(readOnly = true)
     public List<User> findAll() {
         return (List) this.repository.findAll();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<User> findAll(Pageable pageable) {
+        return this.repository.findAll(pageable);
     }
 
     @Transactional(readOnly = true)
@@ -41,5 +49,6 @@ public class UserServiceImpl implements UserService {
     public void deleteById(Long id) {
         repository.deleteById(id);
     }
+
 
 }
